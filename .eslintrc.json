@@ -9,6 +9,7 @@
         "eslint:recommended",
         "plugin:react/recommended"
     ],
+    "parser": "babel-eslint",
     "parserOptions": {
         "ecmaFeatures": {
             "jsx": true
@@ -36,6 +37,7 @@
             "error",
             "never"
         ],
-        "no-console": "warn"
+        "no-console": "warn",
+        "object-curly-spacing": ["warn", "always"]
     }
 }

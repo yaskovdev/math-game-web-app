@@ -1,28 +1,58 @@
-import React, {Component} from 'react'
-import logo from './logo.svg'
+import React, { PureComponent } from 'react'
+import { Button } from 'reactstrap'
 import './App.css'
 
-class App extends Component {
+class App extends PureComponent {
+
+    state = { joined: false, user: {}, challenge: {} }
 
     render() {
+        const { joined, user, challenge } = this.state
         return (
             <div className="App">
-                <header className="App-header">
-                    <img src={logo} className="App-logo" alt="logo"/>
+                {joined && <div>
                     <p>
-                        Edit <code>src/App.js</code> and save to reload.
+                        Hello, {user.name}!
                     </p>
-                    <a
-                        className="App-link"
-                        href="https://reactjs.org"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        Learn React
-                    </a>
-                </header>
+                    <p>
+                        {challenge.question} = {challenge.answer} ?
+                    </p>
+                    <p>
+                        <Button>True</Button>
+                        <Button>False</Button>
+                    </p>
+                </div>}
+                {!joined && <Button onClick={this.join}>Join the game!</Button>}
+                {joined && <Button color="link" onClick={this.leave}>Leave the game</Button>}
             </div>
         )
+    }
+
+    join = () => {
+        const WebSocket = window.WebSocket || window.MozWebSocket
+        const connection = new WebSocket('ws://localhost:8080')
+        this.setState({ connection })
+
+        connection.onopen = () => {
+            console.log('Connection opened')
+        }
+
+        connection.onerror = error => {
+            console.log('Error occurred', error)
+        }
+
+        connection.onmessage = message => {
+            const json = JSON.parse(message.data)
+            const { user, challenge } = json
+            this.setState({ user, challenge })
+        }
+        this.setState({ joined: true })
+    }
+
+    leave = () => {
+        this.setState({ joined: false })
+        const { connection } = this.state
+        connection.close()
     }
 }
 
