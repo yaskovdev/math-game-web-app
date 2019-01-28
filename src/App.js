@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { Button, Table } from 'reactstrap'
+import { Button, ButtonGroup, Col, Container, Row, Table } from 'reactstrap'
 import './App.css'
 
 class App extends PureComponent {
@@ -16,42 +16,48 @@ class App extends PureComponent {
     render() {
         const { joined, user, challenge, ratingTable, result, waitingForNewRound, userGaveAnswer } = this.state
         return (
-            <div className="App">
-                {joined && <div>
-                    <p>
-                        Hello, {user.name}!
-                    </p>
-                    <p>
-                        {waitingForNewRound ? this.formatWaitingMessage(result) : this.format(challenge, userGaveAnswer)}
-                    </p>
-                    <p>
-                        <Button onClick={() => this.answer(true)}
-                            disabled={userGaveAnswer || waitingForNewRound}>True</Button>
-                        <Button onClick={() => this.answer(false)}
-                            disabled={userGaveAnswer || waitingForNewRound}>False</Button>
-                    </p>
-                </div>}
-                {!joined && <Button onClick={this.join}>Join the game!</Button>}
-                {joined && <Button color="link" onClick={this.leave}>Leave the game</Button>}
-                {joined && ratingTable.length > 0 && <Table>
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Score</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {ratingTable.map(user => {
-                            const current = user.id === this.state.user.id
-                            return <tr key={user.id}
-                                className={current ? 'App-user-table-record' : ''}>
-                                <td>{current ? user.name + ' (you)' : user.name}</td>
-                                <td>{user.score}</td>
-                            </tr>
-                        })}
-                    </tbody>
-                </Table>}
-            </div>
+            <Container>
+                <Row>
+                    <Col className="text-center">
+                        {joined && <div>
+                            <p>
+                                <h1>{user.name}</h1>
+                            </p>
+                            <p>
+                                {waitingForNewRound ? this.formatWaitingMessage(result) : this.format(challenge, userGaveAnswer)}
+                            </p>
+                            <p>
+                                <ButtonGroup size={'lg'}>
+                                    <Button onClick={() => this.answer(true)}
+                                        disabled={userGaveAnswer || waitingForNewRound}>True</Button>
+                                    <Button onClick={() => this.answer(false)}
+                                        disabled={userGaveAnswer || waitingForNewRound}>False</Button>
+                                </ButtonGroup>
+                            </p>
+                        </div>}
+                        {!joined && <Button onClick={this.join}>Join the game!</Button>}
+                        {joined && <Button color="link" onClick={this.leave}>Leave the game</Button>}
+                        {joined && ratingTable.length > 0 && <Table>
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Score</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {ratingTable.map(user => {
+                                    const current = user.id === this.state.user.id
+                                    return <tr key={user.id}
+                                        className={current ? 'App-user-table-record' : ''}>
+                                        <td>{current ? user.name + ' (you)' : user.name}</td>
+                                        <td>{user.score}</td>
+                                    </tr>
+                                })}
+                            </tbody>
+                        </Table>}
+                    </Col>
+                </Row>
+            </Container>
         )
     }
 
