@@ -1,9 +1,8 @@
-import React, { PureComponent } from 'react'
+import React from 'react'
 
-export default class Challenge extends PureComponent {
-
-	render() {
-		const { value } = this.props
-		return <h1>{value.question} = {value.answer}?</h1>
-	}
+const Challenge = props => {
+	const { value } = props
+	return <h1>{value.question} = {value.answer}?</h1>
 }
+
+export default Challenge
