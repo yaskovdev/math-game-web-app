@@ -1,9 +1,10 @@
-import React, { PureComponent } from 'react'
+import React, { Fragment, PureComponent } from 'react'
 import { Button, ButtonGroup, Col, Container, Row, Table } from 'reactstrap'
 import './App.css'
 import Challenge from './Challenge'
 import RoundSummary from './RoundSummary'
 import AnswerAccepted from './AnswerAccepted'
+import logo from './logo.jpg'
 
 class App extends PureComponent {
 
@@ -27,7 +28,8 @@ class App extends PureComponent {
                                 <h4>{user.name}</h4>
                             </p>
                             <p>
-                                {waitingForNewRound ? <RoundSummary value={result} /> : this.format(challenge, userGaveAnswer)}
+                                {waitingForNewRound ?
+                                    <RoundSummary value={result}/> : this.format(challenge, userGaveAnswer)}
                             </p>
                             <p>
                                 <ButtonGroup size={'lg'}>
@@ -38,7 +40,18 @@ class App extends PureComponent {
                                 </ButtonGroup>
                             </p>
                         </div>}
-                        {!joined && <Button onClick={this.join}>Join the game!</Button>}
+                        {!joined && <Fragment>
+                            <Row className={'App-logo-row'}>
+                                <Col>
+                                    <img src={logo} alt="Math Game Logo"/>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col>
+                                    <Button onClick={this.join}>Let&#39;s play a game!</Button>
+                                </Col>
+                            </Row>
+                        </Fragment>}
                         {joined && <Button color="link" onClick={this.leave}>Leave the game</Button>}
                         {joined && ratingTable.length > 0 && <Table>
                             <thead>
@@ -70,7 +83,7 @@ class App extends PureComponent {
         this.setState({ connection })
 
         connection.onopen = () => {
-            console.log('Connection opened')
+            this.setState({ joined: true })
         }
 
         connection.onerror = error => {
@@ -94,7 +107,6 @@ class App extends PureComponent {
                 throw new Error('unexpected message type ' + type)
             }
         }
-        this.setState({ joined: true })
     }
 
     leave = () => {
@@ -103,7 +115,7 @@ class App extends PureComponent {
         connection.close()
     }
 
-    format = (challenge, userGaveAnswer) => userGaveAnswer ? <AnswerAccepted /> : <Challenge value={challenge} />
+    format = (challenge, userGaveAnswer) => userGaveAnswer ? <AnswerAccepted/> : <Challenge value={challenge}/>
 
     answer = (agree) => {
         this.setState({ userGaveAnswer: true })
