@@ -38,6 +38,7 @@
             "never"
         ],
         "no-console": "warn",
-        "object-curly-spacing": ["warn", "always"]
+        "object-curly-spacing": ["warn", "always"],
+        "react/prop-types": "off"
     }
 }

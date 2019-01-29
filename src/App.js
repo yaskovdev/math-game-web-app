@@ -86,10 +86,6 @@ class App extends PureComponent {
             this.setState({ joined: true })
         }
 
-        connection.onerror = error => {
-            console.log('Error occurred', error)
-        }
-
         connection.onmessage = message => {
             const json = JSON.parse(message.data)
             const { type } = json
