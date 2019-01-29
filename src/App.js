@@ -1,6 +1,9 @@
 import React, { PureComponent } from 'react'
 import { Button, ButtonGroup, Col, Container, Row, Table } from 'reactstrap'
 import './App.css'
+import Challenge from './Challenge'
+import RoundSummary from './RoundSummary'
+import AnswerAccepted from './AnswerAccepted'
 
 class App extends PureComponent {
 
@@ -21,10 +24,10 @@ class App extends PureComponent {
                     <Col className="text-center">
                         {joined && <div>
                             <p>
-                                <h1>{user.name}</h1>
+                                <h4>{user.name}</h4>
                             </p>
                             <p>
-                                {waitingForNewRound ? this.formatWaitingMessage(result) : this.format(challenge, userGaveAnswer)}
+                                {waitingForNewRound ? <RoundSummary value={result} /> : this.format(challenge, userGaveAnswer)}
                             </p>
                             <p>
                                 <ButtonGroup size={'lg'}>
@@ -100,25 +103,12 @@ class App extends PureComponent {
         connection.close()
     }
 
-    format = (challenge, userGaveAnswer) =>
-        userGaveAnswer ? 'Thank you for your answer! Waiting for others...' : `${challenge.question} = ${challenge.answer}?`
+    format = (challenge, userGaveAnswer) => userGaveAnswer ? <AnswerAccepted /> : <Challenge value={challenge} />
 
     answer = (agree) => {
         this.setState({ userGaveAnswer: true })
         const { connection } = this.state
         connection.send(agree)
-    }
-
-    formatWaitingMessage = (result) => {
-        if (result === 'CORRECT_FIRST_ANSWER') {
-            return 'You won the round! Waiting for a new round to begin...'
-        } else if (result === 'CORRECT_LATE_ANSWER') {
-            return 'Your answer is correct, but someone was faster. Waiting for a new round to begin...'
-        } else if (result === 'WRONG_ANSWER') {
-            return 'Sorry, you gave a wrong answer. Waiting for a new round to begin...'
-        } else {
-            return 'Waiting for a new round to begin...'
-        }
     }
 }
 
