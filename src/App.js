@@ -5,6 +5,7 @@ import Challenge from './Challenge'
 import RoundSummary from './RoundSummary'
 import AnswerAccepted from './AnswerAccepted'
 import logo from './logo.jpg'
+import { API_URL } from './config'
 
 class App extends PureComponent {
 
@@ -79,7 +80,7 @@ class App extends PureComponent {
 
     join = () => {
         const WebSocket = window.WebSocket || window.MozWebSocket
-        const connection = new WebSocket('ws://localhost:8080')
+        const connection = new WebSocket(API_URL)
         this.setState({ connection })
 
         connection.onopen = () => {
