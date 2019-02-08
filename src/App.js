@@ -1,10 +1,11 @@
-import React, { Fragment, PureComponent } from 'react'
-import { Button, ButtonGroup, Col, Container, Row, Table } from 'reactstrap'
+import React, { PureComponent } from 'react'
+import { Button, Col, Container, Jumbotron, Nav, Navbar, NavItem, Row } from 'reactstrap'
 import './App.css'
 import Challenge from './Challenge'
+import Login from './Login'
+import RatingTable from './RatingTable'
 import RoundSummary from './RoundSummary'
 import AnswerAccepted from './AnswerAccepted'
-import logo from './logo.jpg'
 import { API_URL } from './config'
 
 class App extends PureComponent {
@@ -19,66 +20,52 @@ class App extends PureComponent {
         userGaveAnswer: false
     }
 
+    showGame() {
+        const { challenge, roundSummary, waitingForNewRound, userGaveAnswer } = this.state
+        return <div className="game-pnl-wrapper">
+            <Jumbotron className="text-center game-pnl">
+                <div className="round-summary-pnl">
+                    {waitingForNewRound ? <RoundSummary value={roundSummary}/> : this.format(challenge, userGaveAnswer)}
+                </div>
+                <div className="btn-pnl">
+                    <Button outline color="success" size="lg" className="left-submit-btn"
+                        onClick={() => this.registerAnswer(true)}
+                        disabled={userGaveAnswer || waitingForNewRound}>TRUE</Button>
+                    <Button outline color="danger" size="lg" className="right-submit-btn"
+                        onClick={() => this.registerAnswer(false)}
+                        disabled={userGaveAnswer || waitingForNewRound}>FALSE</Button>
+                </div>
+            </Jumbotron>
+        </div>
+    }
+
     render() {
-        const { joined, user, challenge, ratingTable, roundSummary, waitingForNewRound, userGaveAnswer, error } = this.state
+        const { error, joined, user, ratingTable } = this.state
         return (
-            <Container>
-                <Row>
-                    <Col className="text-center">
-                        {joined && <div>
-                            <p>
-                                <h4>{user.name}</h4>
-                            </p>
-                            <p>
-                                {waitingForNewRound ?
-                                    <RoundSummary value={roundSummary}/> : this.format(challenge, userGaveAnswer)}
-                            </p>
-                            <p>
-                                <ButtonGroup size={'lg'}>
-                                    <Button onClick={() => this.registerAnswer(true)}
-                                        disabled={userGaveAnswer || waitingForNewRound}>True</Button>
-                                    <Button onClick={() => this.registerAnswer(false)}
-                                        disabled={userGaveAnswer || waitingForNewRound}>False</Button>
-                                </ButtonGroup>
-                            </p>
-                        </div>}
-                        {!joined && <Fragment>
-                            <Row className={'App-logo-row'}>
-                                <Col>
-                                    <img src={logo} alt="Math Game Logo"/>
-                                </Col>
+            <Container className="vh-100 vw-100 main-container">
+                {!joined && <Login error={error} onLogin={() => this.join()}/>}
+                {joined && <Navbar color="transparent" light className="greeting-pnl">
+                    <Nav className="ml-auto" navbar>
+                        <NavItem className="username-pnl">
+                            <p>{`Hello, ${user.name}`}</p>
+                            <Button color="link" onClick={this.leave}>Leave</Button>
+                        </NavItem>
+                    </Nav>
+                </Navbar>}
+                {joined && <div className="align-middle">
+                    <Row className="game-board-pnl">
+                        <Col md={ratingTable.length > 0 ? '9' : '12'}>
+                            <Row noGutters>
+                                {this.showGame()}
                             </Row>
-                            <Row>
-                                <Col>
-                                    <Button onClick={this.join}>Let&#39;s play a game!</Button>
-                                </Col>
+                        </Col>
+                        {ratingTable.length > 0 && <Col xs="12" sm="12" md="3" className="w-100">
+                            <Row className="h-100 w-100" noGutters>
+                                <RatingTable data={ratingTable} currentUser={this.state.user}/>
                             </Row>
-                            {error && <Row className={'App-error-row'}>
-                                <Col>
-                                    An error occurred. Most likely the user limit was reached. Try again later.
-                                </Col>
-                            </Row>}
-                        </Fragment>}
-                        {joined && <Button color="link" onClick={this.leave}>Leave the game</Button>}
-                        {joined && ratingTable.length > 0 && <Table>
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Score</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {ratingTable.map(user => {
-                                    const current = user.id === this.state.user.id
-                                    return <tr key={user.id} className={current ? 'App-user-table-record' : ''}>
-                                        <td>{current ? user.name + ' (you)' : user.name}</td>
-                                        <td>{user.score}</td>
-                                    </tr>
-                                })}
-                            </tbody>
-                        </Table>}
-                    </Col>
-                </Row>
+                        </Col>}
+                    </Row>
+                </div>}
             </Container>
         )
     }
@@ -92,7 +79,7 @@ class App extends PureComponent {
             this.setState({ joined: true })
         }
 
-        connection.onmessage = message => {
+        connection.onmessage = (message) => {
             const json = JSON.parse(message.data)
             const { type } = json
 

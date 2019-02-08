@@ -1,12 +1,81 @@
-.App-user-table-record {
+.user-table-record {
     background-color: rgba(0, 0, 0, 0.05);
 }
 
-.App-logo-row {
-    margin-top: 70px;
+.logo-row {
     margin-bottom: 30px;
 }
 
-.App-error-row {
+.login-pnl {
     margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    align-items: center;
+}
+
+.main-container .greeting-pnl {
+    padding-right: 0;
+}
+
+.main-container .username-pnl {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+}
+
+.main-container .game-board-pnl {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+    align-items: stretch;
+}
+
+.game-pnl-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+}
+
+.game-pnl {
+    min-width: 100%;
+    min-height: 40%;
+}
+
+.game-pnl .round-summary-pnl {
+    margin: 2em 0;
+}
+
+.game-pnl .btn-pnl {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+}
+
+.game-pnl .left-submit-btn {
+    margin-right: 2em;
+    padding: 0;
+    font-size: 1.5em;
+    line-height: 4em;
+    width: 4em;
+    height: 4em;
+    border-radius: 50%
+}
+
+.game-pnl .right-submit-btn {
+    padding: 0;
+    font-size: 1.5em;
+    line-height: 4em;
+    width: 4em;
+    height: 4em;
+    border-radius: 50%
+}
+
+.error-row {
+    margin-top: 30px;
+    text-align: center;
 }

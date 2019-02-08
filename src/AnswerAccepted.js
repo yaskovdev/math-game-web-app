@@ -1,5 +1,5 @@
 import React from 'react'
 
-const AnswerAccepted = () => <h1>Checking...</h1>
+const AnswerAccepted = () => <h2>Checking...</h2>
 
 export default AnswerAccepted

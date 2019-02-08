@@ -4,7 +4,7 @@ export default class RoundSummary extends PureComponent {
 
     render() {
         const { value } = this.props
-        return <h1>{this.formatWaitingMessage(value)}</h1>
+        return <h2>{this.formatWaitingMessage(value)}</h2>
     }
 
     formatWaitingMessage = (roundSummary) => {
@@ -15,7 +15,7 @@ export default class RoundSummary extends PureComponent {
         } else if (roundSummary === 'WRONG_ANSWER') {
             return <span className={'text-danger'}>Wrong answer.</span>
         } else {
-            return <span>Waiting for a new round...</span>
+            return <span>Get ready...</span>
         }
     }
 }
