@@ -2,16 +2,12 @@
     background-color: rgba(0, 0, 0, 0.05);
 }
 
-.logo-row {
-    margin-bottom: 30px;
-}
-
 .login-pnl {
     margin-top: 30px;
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    align-items: center;
+}
+
+.logo-row {
+    margin-bottom: 30px;
 }
 
 .main-container .greeting-pnl {

@@ -42,7 +42,7 @@ class App extends PureComponent {
     render() {
         const { error, joined, user, ratingTable } = this.state
         return (
-            <Container className="vh-100 vw-100 main-container">
+            <Container className="main-container">
                 {!joined && <Login error={error} onLogin={() => this.join()}/>}
                 {joined && <Navbar color="transparent" light className="greeting-pnl">
                     <Nav className="ml-auto" navbar>
