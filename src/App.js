@@ -28,10 +28,10 @@ class App extends PureComponent {
                     {waitingForNewRound ? <RoundSummary value={roundSummary}/> : this.format(challenge, userGaveAnswer)}
                 </div>
                 <div className="btn-pnl">
-                    <Button outline color="success" size="lg" className="left-submit-btn"
+                    <Button color="success" size="lg" className="left-submit-btn"
                         onClick={() => this.registerAnswer(true)}
                         disabled={userGaveAnswer || waitingForNewRound}>TRUE</Button>
-                    <Button outline color="danger" size="lg" className="right-submit-btn"
+                    <Button color="danger" size="lg" className="right-submit-btn"
                         onClick={() => this.registerAnswer(false)}
                         disabled={userGaveAnswer || waitingForNewRound}>FALSE</Button>
                 </div>
