@@ -1,6 +1,6 @@
 # Math Game Web App
 
-Real-time browser-based math game for up to 10 concurrent users.
+Real-time browser-based math game.
 
 ## Local Deployment
 
